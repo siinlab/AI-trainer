@@ -52,13 +52,10 @@ def split_dataset(dataset, val, test, seed):
         split_logic(dataset, val, test, seed)
     except ValueError as e:
         logger.error(f"ValueError: {e}")
-        click.echo(f"Error: {e}", err=True)
     except FileNotFoundError as e:
         logger.error(f"FileNotFoundError: {e}")
-        click.echo(f"Error: {e}", err=True)
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
-        click.echo(f"Unexpected error: {e}", err=True)
 
 
 @main.command()
@@ -176,13 +173,10 @@ def filter_objects(dataset, objects, output):
     try:
         discard_objects(dataset, objects, output)
         logger.info("Filtering completed successfully.")
-        click.echo("Filtering completed successfully.")
     except FileNotFoundError as e:
         logger.error(f"FileNotFoundError: {e}")
-        click.echo(f"Error: {e}", err=True)
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
-        click.echo(f"Unexpected error: {e}", err=True)
 
 
 @main.command()
@@ -327,21 +321,24 @@ def train_ultralytics(data, model, epochs, img_size, batch, device, cache):
             cache=cache,
         )
         logger.info("Model training completed successfully.")
-        click.echo("Model training completed successfully.")
     except FileNotFoundError as e:
         logger.error(f"FileNotFoundError: {e}")
-        click.echo(f"Error: {e}", err=True)
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
-        click.echo(f"Unexpected error: {e}", err=True)
 
 
 @main.command()
 @click.option(
     "--name",
     type=click.Choice(["coco", "voc"], case_sensitive=False),
-    required=True,
+    required=False,
     help="Name of the dataset to download (e.g., 'coco', 'voc').",
+)
+@click.option(
+    "--url",
+    type=str,
+    required=False,
+    help="Custom URL of the dataset to download.",
 )
 @click.option(
     "--dir",
@@ -349,27 +346,33 @@ def train_ultralytics(data, model, epochs, img_size, batch, device, cache):
     required=True,
     help="Path to the directory where the dataset will be saved.",
 )
-def download_dataset(name, dir):
+def download_dataset(name, url, dir):
     """
-    Downloads a specified dataset and saves it to the given directory.
+    Downloads a specified dataset or a dataset from a custom URL and saves it to the given directory.
 
     Args:
-        dataset_name (str): Name of the dataset to download (e.g., 'coco', 'voc').
-        output_dir (str): Path to the directory where the dataset will be saved.
+        name (str): Name of the dataset to download (e.g., 'coco', 'voc').
+        url (str): Custom URL of the dataset to download.
+        dir (str): Path to the directory where the dataset will be saved.
 
     Raises:
-        ValueError: If the dataset name is not recognized.
+        ValueError: If neither name nor URL is provided.
     """
-    from .datasets.download import download_coco, download_voc
+    from .datasets.download import download_coco, download_voc, download_from_url
 
     try:
-        if name.lower() == "coco":
-            download_coco(dir)
-        elif name.lower() == "voc":
-            download_voc(dir)
+        if name:
+            if name.lower() == "coco":
+                download_coco(dir)
+            elif name.lower() == "voc":
+                download_voc(dir)
+            else:
+                raise ValueError(f"Unsupported dataset: {name}")
+        elif url:
+            download_from_url(url, dir)
         else:
-            raise ValueError(f"Unsupported dataset: {name}")
+            raise ValueError("Either --name or --url must be provided.")
 
-        logger.info(f"{name} dataset downloaded successfully.")
+        logger.info("Dataset downloaded successfully.")
     except Exception as e:
         logger.error(f"Error downloading dataset: {e}")

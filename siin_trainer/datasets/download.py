@@ -105,3 +105,47 @@ def download_voc(output_dir: str):
 
     os.remove(output_path)
     logger.info("Pascal VOC dataset downloaded and extracted successfully.")
+
+
+def download_from_url(url: str, output_dir: str):
+    """
+    Downloads a file from the specified URL to the output directory.
+
+    Args:
+        url (str): The URL of the file to download.
+        output_dir (str): The directory where the file will be saved.
+
+    Returns:
+        None
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    filename = os.path.join(output_dir, os.path.basename(url))
+
+    logger.info(f"Downloading {filename}...")
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get("content-length", 0))
+
+    with (
+        open(filename, "wb") as f,
+        tqdm(
+            desc=f"Downloading {filename}",
+            total=total_size,
+            unit="B",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as progress_bar,
+    ):
+        for chunk in response.iter_content(chunk_size=1 * 1024 * 1024):  # 1 MB
+            if chunk:
+                f.write(chunk)
+                progress_bar.update(len(chunk))
+
+    # If the file is a zip file, extract it
+    if filename.endswith(".zip"):
+        logger.info(f"Extracting {filename}...")
+        with zipfile.ZipFile(filename, "r") as zip_ref:
+            zip_ref.extractall(output_dir)
+        os.remove(filename)
+        logger.info(f"File extracted and removed: {filename}")
+
+    logger.info(f"File downloaded and saved to {filename}.")
