@@ -3,3 +3,4 @@ tqdm
 pyyaml
 requests
 numpy
+ultralytics

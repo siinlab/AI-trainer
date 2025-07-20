@@ -253,3 +253,84 @@ def coco_to_yolo(coco_json, output_dir):
         logger.error(f"FileNotFoundError: {e}")
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
+
+
+@main.command()
+@click.option(
+    "--data",
+    type=click.Path(exists=True, file_okay=True),
+    required=True,
+    help="Path to the dataset YAML file.",
+)
+@click.option(
+    "--model",
+    type=str,
+    default="yolov8n",
+    help="Name of the YOLO model to use (e.g., 'yolov8n', 'yolov8s').",
+)
+@click.option(
+    "--epochs",
+    type=int,
+    default=50,
+    help="Number of training epochs. Defaults to 50.",
+)
+@click.option(
+    "--img-size",
+    type=int,
+    default=640,
+    help="Image size for training. Defaults to 640.",
+)
+@click.option(
+    "--batch",
+    type=int,
+    default=16,
+    help="Batch size for training. Defaults to 16.",
+)
+@click.option(
+    "--device",
+    type=str,
+    default="cuda",
+    help="Device to use for training (e.g., 'cuda', 'cpu'). Defaults to 'cuda'.",
+)
+@click.option(
+    "--cache",
+    type=str,
+    default="ram",
+    help="Cache type to use during training. Defaults to 'ram'.",
+)
+def train_ultralytics(data, model, epochs, img_size, batch, device, cache):
+    """
+    Trains a YOLO model on a custom dataset.
+
+    Args:
+        data (str): Path to the dataset YAML file.
+        model (str): Name of the YOLO model to use.
+        epochs (int): Number of training epochs.
+        img_size (int): Image size for training.
+        batch (int): Batch size for training.
+        device (str): Device to use for training.
+        cache (str): Cache type to use during training.
+
+    Raises:
+        FileNotFoundError: If the dataset YAML file does not exist.
+    """
+    from .models.train_ultralytics import train_ultralytics_model
+
+    try:
+        train_ultralytics_model(
+            data_path=data,
+            model_name=model,
+            epochs=epochs,
+            img_size=img_size,
+            batch=batch,
+            device=device,
+            cache=cache,
+        )
+        logger.info("Model training completed successfully.")
+        click.echo("Model training completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+        click.echo(f"Error: {e}", err=True)
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        click.echo(f"Unexpected error: {e}", err=True)

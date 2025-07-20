@@ -24,3 +24,6 @@ siin-trainer yolo-to-coco --dataset ./dataset1 --output-json ./coco-dataset/here
 siin-trainer coco-to-yolo --coco-json ./coco-dataset/here.json --output-dir ./yolo-dataset
 # # Visualize YOLO dataset
 siin-trainer visualize-dataset --dataset ./yolo-dataset --output ./yolo_dataset_visualization
+
+# Train model on dataset1
+siin-trainer train-ultralytics --data ./dataset1/data.yaml --model yolov8n.pt --device "cpu" --epochs 1 --batch 2
