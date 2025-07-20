@@ -334,3 +334,44 @@ def train_ultralytics(data, model, epochs, img_size, batch, device, cache):
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         click.echo(f"Unexpected error: {e}", err=True)
+
+
+@main.command()
+@click.option(
+    "--dataset-name",
+    type=click.Choice(["coco", "voc"], case_sensitive=False),
+    required=True,
+    help="Name of the dataset to download (e.g., 'coco', 'voc').",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, writable=True),
+    required=True,
+    help="Path to the directory where the dataset will be saved.",
+)
+def download_dataset(dataset_name, output_dir):
+    """
+    Downloads a specified dataset and saves it to the given directory.
+
+    Args:
+        dataset_name (str): Name of the dataset to download (e.g., 'coco', 'voc').
+        output_dir (str): Path to the directory where the dataset will be saved.
+
+    Raises:
+        ValueError: If the dataset name is not recognized.
+    """
+    from .datasets.download import download_coco, download_voc
+
+    try:
+        if dataset_name.lower() == "coco":
+            download_coco(output_dir)
+        elif dataset_name.lower() == "voc":
+            download_voc(output_dir)
+        else:
+            raise ValueError(f"Unsupported dataset: {dataset_name}")
+
+        logger.info(f"{dataset_name} dataset downloaded successfully.")
+        click.echo(f"{dataset_name} dataset downloaded successfully.")
+    except Exception as e:
+        logger.error(f"Error downloading dataset: {e}")
+        click.echo(f"Error: {e}", err=True)
