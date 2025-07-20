@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siin-trainer"
+version = "0.1.0"
+description = "A generic Python library to train AI models on custom datasets."
+authors = [
+    { name="Siin Lab", email="contact@siinlab.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+dependencies = []
+requires-python = "==3.11.*"
+keywords = ["AI", "machine learning", "model training", "custom datasets"]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "flake8"]
+
+[project.scripts]
+siin-trainer = "siin_trainer:cli.main"
+
+[tool.setuptools.packages.find]
+where = ["."]
