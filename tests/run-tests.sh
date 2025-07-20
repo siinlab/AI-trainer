@@ -8,3 +8,19 @@ siin-trainer split-dataset --dataset ./dataset1 --val 0.25 --test 0.25 --seed 1
 
 # Merge dataset1 & dataset2
 siin-trainer merge-datasets --datasets ./dataset1  --datasets  ./dataset2 --output ./merged_dataset
+
+# Visualize dataset1
+siin-trainer visualize-dataset --dataset ./dataset1 --output ./dataset1_visualization
+
+# Filter dataset1
+siin-trainer filter-objects --dataset ./dataset1 --objects "0" --objects "8" --output ./dataset1_filtered
+# # Visualize filtered dataset1
+siin-trainer visualize-dataset --dataset ./dataset1_filtered --output ./dataset1_filtered_visualization
+
+# Convert dataset1 to COCO format
+siin-trainer yolo-to-coco --dataset ./dataset1 --output-json ./coco-dataset/here.json
+
+# Convert dataset1 to YOLO format
+siin-trainer coco-to-yolo --coco-json ./coco-dataset/here.json --output-dir ./yolo-dataset
+# # Visualize YOLO dataset
+siin-trainer visualize-dataset --dataset ./yolo-dataset --output ./yolo_dataset_visualization

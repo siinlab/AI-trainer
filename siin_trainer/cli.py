@@ -95,3 +95,161 @@ def merge_datasets(output, datasets):
         logger.error(f"FileNotFoundError: {e}")
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
+
+
+@main.command()
+@click.option(
+    "--dataset",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+    help="Path to the dataset directory containing 'images' and 'labels'.",
+)
+@click.option(
+    "--output",
+    type=click.Path(file_okay=False, writable=True),
+    required=True,
+    help="Path to the directory where visualized samples will be saved.",
+)
+@click.option(
+    "--num-samples",
+    type=int,
+    default=5,
+    help="Number of random samples to visualize. Defaults to 5.",
+)
+def visualize_dataset(dataset, output, num_samples):
+    """
+    Visualizes N random samples from the dataset and saves them in a directory.
+
+    Args:
+        dataset (str): Path to the dataset directory containing 'images' and 'labels'.
+        output (str): Path to the directory where visualized samples will be saved.
+        num_samples (int): Number of random samples to visualize. Defaults to 5.
+
+    Raises:
+        FileNotFoundError: If the dataset does not contain 'images' and 'labels' directories.
+    """
+    from .datasets.visualize import visualize_samples
+
+    try:
+        visualize_samples(dataset, output, num_samples)
+        logger.info("Visualization completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+
+
+@main.command()
+@click.option(
+    "--dataset",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+    help="Path to the dataset directory containing 'images' and 'labels'.",
+)
+@click.option(
+    "--objects",
+    type=str,
+    multiple=True,
+    required=True,
+    help="Names of objects to discard. Provide multiple names separated by spaces.",
+)
+@click.option(
+    "--output",
+    type=click.Path(file_okay=False, writable=True),
+    required=True,
+    help="Path to the output directory. If not provided, modifies the dataset in place.",
+)
+def filter_objects(dataset, objects, output):
+    """
+    Discards specified objects from a dataset by removing their entries in label files.
+
+    Args:
+        dataset (str): Path to the dataset directory containing 'images' and 'labels'.
+        objects (tuple): Names of objects to discard.
+        output (str, optional): Path to the output directory. If None, modifies the dataset in place.
+
+    Raises:
+        FileNotFoundError: If the dataset does not contain 'images', 'labels', or 'data.yaml'.
+    """
+    from .datasets.filter import discard_objects
+
+    try:
+        discard_objects(dataset, objects, output)
+        logger.info("Filtering completed successfully.")
+        click.echo("Filtering completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+        click.echo(f"Error: {e}", err=True)
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        click.echo(f"Unexpected error: {e}", err=True)
+
+
+@main.command()
+@click.option(
+    "--dataset",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+    help="Path to the YOLOv5 dataset directory containing 'images' and 'labels'.",
+)
+@click.option(
+    "--output-json",
+    type=click.Path(writable=True),
+    required=True,
+    help="Path to the output COCO JSON file.",
+)
+def yolo_to_coco(dataset, output_json):
+    """
+    Converts a YOLOv5 dataset to COCO format.
+
+    Args:
+        dataset (str): Path to the YOLOv5 dataset directory containing 'images' and 'labels'.
+        output_json (str): Path to the output COCO JSON file.
+
+    Raises:
+        FileNotFoundError: If the dataset does not contain 'images', 'labels', or 'data.yaml'.
+    """
+    from .datasets.convert import convert_yolo_to_coco
+
+    try:
+        convert_yolo_to_coco(dataset, output_json)
+        logger.info("Conversion to COCO format completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+
+
+@main.command()
+@click.option(
+    "--coco-json",
+    type=click.Path(exists=True, file_okay=True),
+    required=True,
+    help="Path to the COCO JSON file.",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, writable=True),
+    required=True,
+    help="Path to the output YOLOv5 dataset directory.",
+)
+def coco_to_yolo(coco_json, output_dir):
+    """
+    Converts a COCO dataset to YOLOv5 format.
+
+    Args:
+        coco_json (str): Path to the COCO JSON file.
+        output_dir (str): Path to the output YOLOv5 dataset directory.
+
+    Raises:
+        FileNotFoundError: If the COCO JSON file does not exist.
+    """
+    from .datasets.convert import convert_coco_to_yolo
+
+    try:
+        convert_coco_to_yolo(coco_json, output_dir)
+        logger.info("Conversion to YOLOv5 format completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
