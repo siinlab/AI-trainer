@@ -49,10 +49,10 @@ def download_coco(output_dir: str):
                 total=total_size,
                 unit="B",
                 unit_scale=True,
-                unit_divisor=5 * 1024 * 1024,  # 5 MB
+                unit_divisor=1 * 1024 * 1024,  # 1 MB
             ) as progress_bar,
         ):
-            for chunk in response.iter_content(chunk_size=5 * 1024 * 1024):  # 5 MB
+            for chunk in response.iter_content(chunk_size=1 * 1024 * 1024):  # 1 MB
                 if chunk:
                     f.write(chunk)
                     progress_bar.update(len(chunk))
@@ -95,7 +95,7 @@ def download_voc(output_dir: str):
             unit_divisor=1024,
         ) as progress_bar,
     ):
-        for chunk in response.iter_content(chunk_size=5 * 1024 * 1024):
+        for chunk in response.iter_content(chunk_size=1 * 1024 * 1024):
             if chunk:
                 f.write(chunk)
                 progress_bar.update(len(chunk))

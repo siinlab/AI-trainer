@@ -29,4 +29,4 @@ siin-trainer visualize-dataset --dataset ./yolo-dataset --output ./yolo_dataset_
 siin-trainer train-ultralytics --data ./dataset1/data.yaml --model yolov8n.pt --device "cpu" --epochs 1 --batch 2
 
 # Download a dataset
-siin-trainer download-dataset --dataset-name "voc" --output-dir ./voc_dataset
+siin-trainer download-dataset --name "voc" --dir ./voc_dataset
