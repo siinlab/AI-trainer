@@ -11,12 +11,20 @@ authors = [
 ]
 license = { text = "MIT" }
 readme = "README.md"
-dependencies = []
 requires-python = "==3.11.*"
 keywords = ["AI", "machine learning", "model training", "custom datasets"]
+dependencies = [
+    "click",
+    "lgg",
+    "tqdm",
+    "pyyaml",
+    "requests",
+    "numpy",
+    "ultralytics"
+]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "flake8"]
+dev = ["ruff"]
 
 [project.scripts]
 siin-trainer = "siin_trainer:cli.main"

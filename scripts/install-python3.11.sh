@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e 
+
+cd "$(dirname "$0")/.."
 
 # Ensure this is an ubuntu system
 if [ ! -f /etc/lsb-release ]; then
@@ -11,15 +14,17 @@ export DEBIAN_FRONTEND=noninteractive
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update -y
 
+# Install UV
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # Install Python 3.11
-sudo apt install python3.11 python3.11-venv python3.11-dev -y
+uv python install 3.11
 
-# Install pip for Python 3.11
-curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.11 - --ignore-installed
+# Create a virtual environment
+uv venv --python 3.11 siin-trainer-venv
 
-# Create a symlink for python3
-sudo ln -fs "$(which python3.11)" "$(which python3)"
-sudo ln -fs "$(which python3.11)" "$(which python)"
-# Create a symlink for pip
-sudo ln -fs "$(which pip3.11)" "$(which pip)"
-sudo ln -fs "$(which pip3.11)" "$(which pip3)"
+# Activate the virtual environment
+source siin-trainer-venv/bin/activate
+
+# Install required packages
+uv pip sync requirements.txt
