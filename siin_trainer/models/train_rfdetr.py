@@ -52,7 +52,11 @@ def train_rfdetr_model(
         batch_size=batch_size,
         device=device,
         resume=resume,
+        lr=1e-4,
+        grad_accum_steps=4,
+        wandb=True,
+        project="AI-Trainer-RFDETR-Runs",
     )
 
     # Export the trained model to ONNX format
-    model.export(output_dir="AI-Trainer-RFDETR-Runs", simplify= True, opset_version=12)
+    model.export(output_dir="AI-Trainer-RFDETR-Runs", simplify=True, opset_version=12)

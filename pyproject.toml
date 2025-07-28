@@ -22,7 +22,7 @@ dependencies = [
     "numpy",
     "ultralytics",
     "wandb>=0.21.0",
-    "rfdetr[onnxexport]>=1.2.1",
+    "rfdetr[metrics,onnxexport]>=1.2.1",
 ]
 
 [project.optional-dependencies]
