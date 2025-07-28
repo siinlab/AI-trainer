@@ -11,7 +11,6 @@ fi
 
 # Update package list
 export DEBIAN_FRONTEND=noninteractive
-sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update -y
 
 # Install UV
