@@ -21,10 +21,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv python install 3.11
 
 # Create a virtual environment
-uv venv --python 3.11 siin-trainer-venv
-
-# Activate the virtual environment
-source siin-trainer-venv/bin/activate
+uv venv --python 3.11
 
 # Install required packages
 uv pip sync requirements.txt
