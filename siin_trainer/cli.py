@@ -376,3 +376,76 @@ def download_dataset(name, url, dir):
         logger.info("Dataset downloaded successfully.")
     except Exception as e:
         logger.error(f"Error downloading dataset: {e}")
+
+
+@main.command()
+@click.option(
+    "--data",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+    help="Path to the dataset directory.",
+)
+@click.option(
+    "--model",
+    type=click.Choice(
+        ["RFDETRMedium", "RFDETRNano", "RFDETRSmall", "RFDETRLarge", "RFDETRBase"],
+        case_sensitive=True,
+    ),
+    default="RFDETRMedium",
+    help="Name of the RF-DETR model to use.",
+)
+@click.option(
+    "--epochs",
+    type=int,
+    default=50,
+    help="Number of training epochs. Defaults to 50.",
+)
+@click.option(
+    "--batch-size",
+    type=int,
+    default=16,
+    help="Batch size for training. Defaults to 16.",
+)
+@click.option(
+    "--device",
+    type=str,
+    default="cuda",
+    help="Device to use for training (e.g., 'cuda', 'cpu'). Defaults to 'cuda'.",
+)
+@click.option(
+    "--resume",
+    type=click.Path(exists=True, file_okay=True),
+    required=False,
+    help="Path to the checkpoint file to resume training from.",
+)
+def train_rfdetr(data, model, epochs, batch_size, device, resume):
+    """
+    Trains an RF-DETR model on a custom dataset.
+
+    Args:
+        data (str): Path to the dataset directory.
+        model (str): Name of the RF-DETR model to use.
+        epochs (int): Number of training epochs.
+        batch_size (int): Batch size for training.
+        device (str): Device to use for training.
+        resume (str): Path to the checkpoint file to resume training from.
+
+    Raises:
+        FileNotFoundError: If the dataset directory does not exist.
+    """
+    from .models.train_rfdetr import train_rfdetr_model
+
+    try:
+        train_rfdetr_model(
+            data_path=data,
+            model_name=model,
+            epochs=epochs,
+            batch_size=batch_size,
+            device=device,
+            resume=resume,
+        )
+        logger.info("RF-DETR model training completed successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
