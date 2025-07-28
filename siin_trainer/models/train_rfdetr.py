@@ -52,6 +52,7 @@ def train_rfdetr_model(
         batch_size=batch_size,
         device=device,
         resume=resume,
+        num_workers=8,
         lr=1e-4,
         grad_accum_steps=4,
         wandb=True,
