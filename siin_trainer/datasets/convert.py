@@ -53,7 +53,8 @@ def convert_yolo_to_coco(dataset_path, output_json):
         "images": [],
         "annotations": [],
         "categories": [
-            {"id": idx, "name": name} for idx, name in enumerate(class_names)
+            {"id": idx, "name": name, "supercategory": "object"}
+            for idx, name in enumerate(class_names)
         ],
     }
 
