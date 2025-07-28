@@ -51,11 +51,11 @@ def split_dataset(dataset, val, test, seed):
     try:
         split_logic(dataset, val, test, seed)
     except ValueError as e:
-        logger.error(f"ValueError: {e}")
+        logger.error(f"ValueError: {e}", exc_info=True)
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -89,9 +89,9 @@ def merge_datasets(output, datasets):
         merge_yolo_datasets(output, *datasets)
         logger.info("Datasets merged successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -131,9 +131,9 @@ def visualize_dataset(dataset, output, num_samples):
         visualize_samples(dataset, output, num_samples)
         logger.info("Visualization completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -174,9 +174,9 @@ def filter_objects(dataset, objects, output):
         discard_objects(dataset, objects, output)
         logger.info("Filtering completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -209,9 +209,9 @@ def yolo_to_coco(dataset, output_json):
         convert_yolo_to_coco(dataset, output_json)
         logger.info("Conversion to COCO format completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -244,9 +244,9 @@ def coco_to_yolo(coco_json, output_dir):
         convert_coco_to_yolo(coco_json, output_dir)
         logger.info("Conversion to YOLOv5 format completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -322,9 +322,9 @@ def train_ultralytics(data, model, epochs, img_size, batch, device, cache):
         )
         logger.info("Model training completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
 
 
 @main.command()
@@ -375,7 +375,7 @@ def download_dataset(name, url, dir):
 
         logger.info("Dataset downloaded successfully.")
     except Exception as e:
-        logger.error(f"Error downloading dataset: {e}")
+        logger.error(f"Error downloading dataset: {e}", exc_info=True)
 
 
 @main.command()
@@ -446,6 +446,6 @@ def train_rfdetr(data, model, epochs, batch_size, device, resume):
         )
         logger.info("RF-DETR model training completed successfully.")
     except FileNotFoundError as e:
-        logger.error(f"FileNotFoundError: {e}")
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}", exc_info=True)
