@@ -32,3 +32,6 @@ source ".venv/bin/activate"
 
 # Enable auto-completion for click
 eval "$(_SIIN_TRAINER_COMPLETE=bash_source siin-trainer)" >> ~/.bashrc
+
+# Enable WandB
+yolo settings wandb=True

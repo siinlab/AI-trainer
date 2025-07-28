@@ -20,7 +20,8 @@ dependencies = [
     "pyyaml",
     "requests",
     "numpy",
-    "ultralytics"
+    "ultralytics",
+    "wandb>=0.21.0",
 ]
 
 [project.optional-dependencies]

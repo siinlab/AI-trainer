@@ -44,4 +44,5 @@ def train_ultralytics_model(
         batch=batch,
         device=device,
         cache=cache,
+        project="AI-Trainer-Ultralytics-Runs",
     )
