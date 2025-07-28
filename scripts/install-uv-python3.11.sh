@@ -24,4 +24,4 @@ uv python install 3.11
 uv venv --python 3.11
 
 # Install required packages
-uv pip sync requirements.txt
+uv sync
