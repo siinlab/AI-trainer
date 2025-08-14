@@ -23,6 +23,7 @@ dependencies = [
     "ultralytics",
     "wandb>=0.21.0",
     "rfdetr[metrics,onnxexport]>=1.2.1",
+    "clip",
 ]
 
 [project.optional-dependencies]
@@ -33,3 +34,6 @@ siin-trainer = "siin_trainer:cli.main"
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+[tool.uv.sources]
+clip = { git = "https://github.com/openai/CLIP.git" }

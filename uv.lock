@@ -125,6 +125,19 @@ wheels = [
 ]
 
 [[package]]
+name = "clip"
+version = "1.0"
+source = { git = "https://github.com/openai/CLIP.git#dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1" }
+dependencies = [
+    { name = "ftfy" },
+    { name = "packaging" },
+    { name = "regex" },
+    { name = "torch" },
+    { name = "torchvision" },
+    { name = "tqdm" },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -1626,6 +1639,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "clip" },
     { name = "lgg" },
     { name = "numpy" },
     { name = "pyyaml" },
@@ -1644,6 +1658,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "click" },
+    { name = "clip", git = "https://github.com/openai/CLIP.git" },
     { name = "lgg" },
     { name = "numpy" },
     { name = "pyyaml" },

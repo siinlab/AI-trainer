@@ -449,3 +449,45 @@ def train_rfdetr(data, model, epochs, batch_size, device, resume):
         logger.error(f"FileNotFoundError: {e}", exc_info=True)
     except Exception as e:
         logger.error(f"Unexpected error: {e}", exc_info=True)
+
+
+@main.command()
+@click.option(
+    "--video",
+    type=click.Path(exists=True, file_okay=True),
+    required=True,
+    help="Path to the video file from which to extract frames.",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, writable=True),
+    required=True,
+    help="Path to the directory where extracted frames will be saved.",
+)
+@click.option(
+    "--similarity-threshold",
+    type=float,
+    default=0.5,
+    help="Threshold for similarity when processing frames. Defaults to 0.5.",
+)
+def extract_frames(video, output_dir, similarity_threshold):
+    """
+    Extracts frames from a video file and saves them as images in the specified directory.
+
+    Args:
+        video (str): Path to the video file.
+        output_dir (str): Path to the directory where extracted frames will be saved.
+        similarity_threshold (float): Threshold for similarity when processing frames.
+
+    Raises:
+        FileNotFoundError: If the video file does not exist.
+    """
+    from .datasets.extract_images import extract_frames_from_video
+
+    try:
+        extract_frames_from_video(video, output_dir, similarity_threshold)
+        logger.info("Frames extracted successfully.")
+    except FileNotFoundError as e:
+        logger.error(f"FileNotFoundError: {e}", exc_info=True)
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}", exc_info=True)
