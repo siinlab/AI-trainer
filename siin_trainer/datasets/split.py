@@ -11,6 +11,7 @@ The module includes:
 """
 
 from lgg import logger
+import yaml
 
 
 def split_dataset(dataset_path, val_ratio, test_ratio, seed=1):
@@ -48,6 +49,8 @@ def split_dataset(dataset_path, val_ratio, test_ratio, seed=1):
 
     # get image and label paths
     img_paths = list((dataset / "images").glob("*"))
+    # Keep only the image file name
+    img_paths = [f"./images/{p.name}" for p in img_paths]
     logger.info(f"Found {len(img_paths)} images in `{dataset}`")
 
     # seed the generator
@@ -81,5 +84,23 @@ def split_dataset(dataset_path, val_ratio, test_ratio, seed=1):
     if len(test) > 0:
         with open(dataset / "test.txt", "w") as f:
             f.write("\n".join(map(str, test)))
+
+    # Alter the data.yaml file to point to the partition files
+    data_yaml = dataset / "data.yaml"
+    if data_yaml.exists():
+        with open(data_yaml, "r") as f:
+            data = yaml.safe_load(f)
+        data["path"] = "./"
+        data["train"] = "./train.txt"
+        if len(val) > 0:
+            data["val"] = "./val.txt"
+        elif "val" in data:
+            del data["val"]
+        if len(test) > 0:
+            data["test"] = "./test.txt"
+        elif "test" in data:
+            del data["test"]
+        with open(data_yaml, "w") as f:
+            yaml.safe_dump(data, f)
 
     logger.info("Dataset split successfully.")
