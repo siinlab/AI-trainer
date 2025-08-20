@@ -30,7 +30,7 @@ def merge_yolo_datasets(output_dir, *dataset_paths):
     Raises:
         FileNotFoundError: If any of the dataset paths do not exist or are not properly formatted.
     """
-    output_dir = Path(output_dir)
+    output_dir = Path(output_dir).resolve()
     output_images = output_dir / "images"
     output_labels = output_dir / "labels"
     output_yaml = output_dir / "data.yaml"
@@ -72,7 +72,7 @@ def merge_yolo_datasets(output_dir, *dataset_paths):
             shutil.copy(image_path, output_images / new_image_name)
 
             # Copy corresponding label file
-            label_path = (dataset_path / "labels" / image_path.stem).with_suffix(".txt")
+            label_path = (dataset_path / "labels" / image_path.name).with_suffix(".txt")
             if label_path.exists():
                 with open(label_path, "r") as label_file:
                     lines = label_file.readlines()

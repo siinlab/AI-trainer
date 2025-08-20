@@ -70,7 +70,7 @@ def convert_yolo_to_coco(dataset_path, output_json):
         }
         coco_format["images"].append(image_info)
 
-        label_file = (labels_dir / image_file.stem).with_suffix(".txt")
+        label_file = (labels_dir / image_file.name).with_suffix(".txt")
         if label_file.exists():
             with open(label_file, "r") as f:
                 lines = f.readlines()

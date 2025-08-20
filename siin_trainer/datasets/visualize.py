@@ -25,8 +25,8 @@ def visualize_samples(dataset_path, output_dir, num_samples=5):
     Raises:
         FileNotFoundError: If the dataset does not contain 'images' and 'labels' directories.
     """
-    dataset_path = Path(dataset_path)
-    output_dir = Path(output_dir)
+    dataset_path = Path(dataset_path).resolve()
+    output_dir = Path(output_dir).resolve()
     images_dir = dataset_path / "images"
     labels_dir = dataset_path / "labels"
 
@@ -53,11 +53,10 @@ def visualize_samples(dataset_path, output_dir, num_samples=5):
             continue
 
         # Read corresponding label file
-        label_path = (labels_dir / image_path.stem).with_suffix(".txt")
+        label_path = (labels_dir / image_path.name).with_suffix(".txt")
         if label_path.exists():
             with open(label_path, "r") as label_file:
                 lines = label_file.readlines()
-
             for line in lines:
                 parts = line.strip().split()
                 if len(parts) < 5:
@@ -84,7 +83,8 @@ def visualize_samples(dataset_path, output_dir, num_samples=5):
                 cv2.putText(
                     image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2
                 )
-
+        else:
+            logger.warning(f"No label file found for {image_path}: '{label_path}'")
         # Save visualized image
         output_path = output_dir / image_path.name
         cv2.imwrite(str(output_path), image)
