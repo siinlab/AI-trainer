@@ -78,7 +78,7 @@ def extract_frames_from_video(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     logger.info(f"Opening video file: {video_path}")
-    video_capture = cv2.VideoCapture(video_path)
+    video_capture = cv2.VideoCapture(video_path.as_posix())
 
     if not video_capture.isOpened():
         logger.error(f"Failed to open video file: {video_path}")
