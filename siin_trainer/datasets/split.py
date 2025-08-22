@@ -100,7 +100,7 @@ def split_dataset(dataset_path, val_ratio, test_ratio, seed=1):
             data["test"] = "./test.txt"
         elif "test" in data:
             del data["test"]
-        with open(data_yaml, "w") as f:
-            yaml.safe_dump(data, f)
+        with open(data_yaml, "w", encoding="utf-8") as f:
+            yaml.safe_dump(data, f, allow_unicode=True)
 
     logger.info("Dataset split successfully.")

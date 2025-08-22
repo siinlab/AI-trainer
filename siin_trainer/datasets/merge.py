@@ -94,7 +94,7 @@ def merge_yolo_datasets(output_dir, *dataset_paths):
             image_counter += 1
 
     # Write merged class definitions to data.yaml
-    with open(output_yaml, "w") as f:
-        yaml.dump({"names": merged_classes, "nc": len(merged_classes), "path": "./"}, f)
+    with open(output_yaml, "w", encoding="utf-8") as f:
+        yaml.dump({"names": merged_classes, "nc": len(merged_classes), "path": "./"}, f, allow_unicode=True)
 
     logger.info(f"Merged dataset created at {output_dir}")

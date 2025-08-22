@@ -38,7 +38,7 @@ def visualize_samples(dataset_path, output_dir, num_samples=5):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Load class names from data.yaml
-    with open(dataset_path / "data.yaml", "r") as f:
+    with open(dataset_path / "data.yaml", "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
         class_names = data.get("names", [])
 
@@ -79,6 +79,16 @@ def visualize_samples(dataset_path, output_dir, num_samples=5):
                     if class_idx < len(class_names)
                     else str(class_idx)
                 )
+                # Map Arabic letters to Latin equivalents
+                arabic_to_latin = {
+                    "أ": "A/", "ب": "B/", "ت": "T/", "ث": "TH/", "ج": "J/", "ح": "H/",
+                    "خ": "KH/", "د": "D/", "ذ": "DH/", "ر": "R/", "ز": "Z/", "س": "S/",
+                    "ش": "SH/", "ص": "S/", "ض": "D/", "ط": "T/", "ظ": "DH/", "ع": "A/",
+                    "غ": "GH/", "ف": "F/", "ق": "Q/", "ك": "K/", "ل": "L/", "م": "M/",
+                    "ن": "N/", "ه": "H/", "و": "W/", "ي": "Y/"
+                }
+                label = ''.join(arabic_to_latin.get(char, char) for char in label)
+                
                 cv2.rectangle(image, (x1, y1), (x2, y2), color, 2)
                 cv2.putText(
                     image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2
